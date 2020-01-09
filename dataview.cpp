@@ -16,13 +16,10 @@ DataView::DataView(QWidget *parent) :
     ui->setupUi(this);
     dataTimer = new QTimer;
 
-    // set dark background gradient:
-    QLinearGradient gradient(0, 0, 0, 400);
-    gradient.setColorAt(0, QColor(90, 90, 90));
-    gradient.setColorAt(0.38, QColor(105, 105, 105));
-    gradient.setColorAt(1, QColor(70, 70, 70));
+
     ui->customPlot->setBackground(QBrush(QColor( 224, 224, 224)));
     ui->customPlot->legend->setVisible(true);
+
     ui->customPlot->addGraph();
     QPen pen0;
     pen0.setWidth(2);
@@ -54,7 +51,6 @@ DataView::DataView(QWidget *parent) :
     dataTimer->setInterval(1000);
     dataTimer->start();
 
-
     connect(parent, SIGNAL(sendData(QString)), this, SLOT(receveData(QString)));
 
 }
@@ -72,17 +68,6 @@ void DataView::receveData(QString msg)
 
     QJsonValue tmp = sett2.value(QString("temperature"));
     QJsonValue hum = sett2.value(QString("humidity"));
-
-    const QString content = QDateTime::currentDateTime().toString()
-            + QLatin1Char('\n')
-            + QLatin1String(" Temperature: ")
-            + QString::number(tmp.toDouble())
-            + QLatin1Char('\n')
-            + QLatin1String(" Humidite: ")
-            + QString::number(hum.toDouble())
-            + QLatin1Char('\n');
-
-    //    ui->textEdit->setText(content);
 
     tmpG= tmp.toDouble();
     ui->label_tmp->setText(QString::number(tmp.toDouble(),'g',3));
@@ -104,7 +89,6 @@ void DataView::realtimeDataSlot()
         // add data to lines:
         ui->customPlot->graph(0)->addData(key, QRandomGenerator::global()->bounded(tmpG));
         ui->customPlot->graph(1)->addData(key, QRandomGenerator::global()->bounded(humG));
-
 
         lastPointKey = key;
     }

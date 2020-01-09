@@ -2,10 +2,6 @@
 #include "ui_mainwindow.h"
 #include <QDebug>
 #include <QMessageBox>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
-#include <QJsonValue>
 #include <QString>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -22,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     iconLbl = new QLabel;
-
     iconLbl->setPixmap(QPixmap(":/disconnected.png").scaledToHeight((ui->statusbar->height()/2)+10));
     iconLbl->setScaledContents(false);
     iconLbl->setAlignment(Qt::AlignRight);
@@ -49,33 +44,41 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
-    delete ui;
     client->disconnectFromHost();
+    delete ui;
+
 }
 
 void MainWindow::connecte()
 {
     ui->statusbar->showMessage("Connecter");
     iconLbl->setPixmap(QPixmap(":/connected.png").scaledToHeight((ui->statusbar->height()/2)+10));
+
+    ui->lineEdit_host->setEnabled(false);
+    ui->spinBox_port->setEnabled(false);
+    ui->pushButton_conect->setText(tr("Déconnexion"));
 }
 
 void MainWindow::deconnecte()
 {
     ui->statusbar->showMessage("Déconnecter");
     iconLbl->setPixmap(QPixmap(":/disconnected.png").scaledToHeight((ui->statusbar->height()/2)+10));
+
+    const QString content =  QLatin1String(" Deconnexion de : ")
+            + ui->lineEdit_host->text()
+            + QLatin1Char('\n');
+
+    QMessageBox::critical(this, "Erreur", content);
+    ui->lineEdit_host->setEnabled(true);
+    ui->spinBox_port->setEnabled(true);
+    ui->pushButton_conect->setText(tr("Connexion"));
 }
 
 void MainWindow::connexion()
 {
     if (client->state() == QMqttClient::Disconnected) {
-        ui->lineEdit_host->setEnabled(false);
-        ui->spinBox_port->setEnabled(false);
-        ui->pushButton_conect->setText(tr("Déconnexion"));
         client->connectToHost();
     } else {
-        ui->lineEdit_host->setEnabled(true);
-        ui->spinBox_port->setEnabled(true);
-        ui->pushButton_conect->setText(tr("Connexion"));
         client->disconnectFromHost();
     }
 }
@@ -90,8 +93,14 @@ void MainWindow::souscrire()
                 + QLatin1Char('\n')
                 + QLatin1String(" verifier que vous n'etes pas deconnecter. ")
                 + QLatin1Char('\n');
+
         QMessageBox::critical(this, "Erreur", content);
-        return;
+
+        ui->lineEdit_host->setEnabled(true);
+        ui->spinBox_port->setEnabled(true);
+        ui->pushButton_conect->setText(tr("Connexion"));
+        client->disconnectFromHost();
+
     } else {
         hide();
         dataPage->exec();
@@ -105,6 +114,7 @@ void MainWindow::souscrire()
 void MainWindow::messageRecu(const QByteArray &message, const QMqttTopicName &topic)
 {
     emit sendData(message);
+    qDebug() << message;
 
 }
 
