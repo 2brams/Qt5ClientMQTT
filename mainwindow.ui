@@ -106,7 +106,7 @@ QGroupBox::title {
              <property name="styleSheet">
               <string notr="true">QPushButton {
 color: white;
-     background-color: #DD5A27;
+     background-color: green;
  border: 2px solid black;
      border-radius: 9px;
 }</string>

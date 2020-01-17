@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    setFixedSize(350,250);
     client = new QMqttClient(this);
     dataPage = new DataView(this);
     client->setHostname(ui->lineEdit_host->text());

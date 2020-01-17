@@ -87,8 +87,10 @@ void DataView::realtimeDataSlot()
     if (key - lastPointKey > 0.002) // at most add point every 2 ms
     {
         // add data to lines:
-        ui->customPlot->graph(0)->addData(key, QRandomGenerator::global()->bounded(tmpG));
-        ui->customPlot->graph(1)->addData(key, QRandomGenerator::global()->bounded(humG));
+        //        ui->customPlot->graph(0)->addData(key, QRandomGenerator::global()->bounded(tmpG));
+        //        ui->customPlot->graph(1)->addData(key, QRandomGenerator::global()->bounded(humG));
+        ui->customPlot->graph(0)->addData(key, tmpG);
+        ui->customPlot->graph(1)->addData(key,humG);
 
         lastPointKey = key;
     }
