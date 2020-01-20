@@ -10,8 +10,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     setFixedSize(350,250);
+
     client = new QMqttClient(this);
     dataPage = new DataView(this);
+
     client->setHostname(ui->lineEdit_host->text());
     client->setPort(ui->spinBox_port->value());
 
@@ -26,7 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->statusbar->showMessage("Déconnecter");
     ui->statusbar->insertPermanentWidget(0,iconLbl,0);
 
-
+    ui->pushButton_souscrire->setHidden(true);
 
     connect(ui->pushButton_conect, SIGNAL(clicked()), this, SLOT(connexion()));
     connect(ui->pushButton_souscrire, SIGNAL(clicked()), this, SLOT(souscrire()));
@@ -55,9 +57,11 @@ void MainWindow::connecte()
     ui->statusbar->showMessage("Connecter");
     iconLbl->setPixmap(QPixmap(":/connected.png").scaledToHeight((ui->statusbar->height()/2)+10));
 
+    ui->pushButton_souscrire->setHidden(false);
     ui->lineEdit_host->setEnabled(false);
     ui->spinBox_port->setEnabled(false);
     ui->pushButton_conect->setText(tr("Déconnexion"));
+
 }
 
 void MainWindow::deconnecte()
@@ -72,6 +76,7 @@ void MainWindow::deconnecte()
     QMessageBox::critical(this, "Erreur", content);
     ui->lineEdit_host->setEnabled(true);
     ui->spinBox_port->setEnabled(true);
+    ui->pushButton_souscrire->setHidden(true);
     ui->pushButton_conect->setText(tr("Connexion"));
 }
 
@@ -106,6 +111,7 @@ void MainWindow::souscrire()
         hide();
         dataPage->exec();
         show();
+         client->disconnectFromHost();
 
     }
 }
