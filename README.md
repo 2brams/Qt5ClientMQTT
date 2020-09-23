@@ -3,8 +3,7 @@
  <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
 </p>
 
-<h3 align="center">Data Logger</h3>
-<h5 align="center">Qt5 Client MQTT</h5>
+<h3 align="center">Qt5-Client-MQTT</h3>
 
 <div align="center">
 
@@ -67,7 +66,7 @@ sudo make install
 
 ## 🔧 Running <a name = "tests"></a>
 
-Nous devons ajouter mqtt au fichier MqttTest2.pro
+Nous devons ajouter MQTT au fichier MqttTest2.pro
 
 ```
 QT += network mqtt
@@ -81,7 +80,7 @@ QT += network mqtt
 
 ## Screenshots <a name = "screenshots"></a>
 
-![connexion](https://imgur.com/VOEW9Dx.png)
+![connexion](https://imgur.com/y0Fz8UQ.png)
 
 ![visualisation_data](https://imgur.com/bMLs68I.png)
 

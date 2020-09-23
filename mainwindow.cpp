@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     client->setHostname(ui->lineEdit_host->text());
     client->setPort(ui->spinBox_port->value());
 
-    ui->label->setPixmap(QPixmap(":/logo.png").scaledToHeight(100));
+//    ui->label->setPixmap(QPixmap(":/logo.png").scaledToHeight(100));
 
 
     iconLbl = new QLabel;
